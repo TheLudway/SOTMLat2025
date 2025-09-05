@@ -9,3 +9,5 @@ tmp/
 build
 htmlcov
 .venv/
+
+cache/
