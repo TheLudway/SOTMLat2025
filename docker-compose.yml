@@ -29,7 +29,8 @@ services:
       - grafana_data:/var/lib/grafana
 
   loader:
-    build: ./src
+    loader:
+      image: loader:latest
     secrets:
       - postgres_password
     environment:
