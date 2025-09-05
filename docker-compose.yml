@@ -10,7 +10,9 @@ services:
     volumes:
       - postgis_data:/var/lib/postgresql/data
     networks:
-      - sotm_net
+      sotm_net:
+        external: true
+        name: sotmlat2025_sotm_net
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U admin -d osmdata"]
       interval: 10s
