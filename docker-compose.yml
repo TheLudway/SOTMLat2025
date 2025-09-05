@@ -3,53 +3,44 @@ version: "3.8"
 services:
   db:
     image: postgis/postgis:15-3.4
-    secrets:
-      - postgres_password
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_DB: osmdata
-      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    env_file:
+      - .env/db.env
     ports:
       - "5432:5432"
     volumes:
       - postgis_data:/var/lib/postgresql/data
+    networks:
+      - sotm_net
 
   grafana:
     image: grafana/grafana-oss:latest
-    secrets:
-      - grafana_password
-    environment:
-      GF_SECURITY_ADMIN_USER: admin
-      GF_SECURITY_ADMIN_PASSWORD_FILE: /run/secrets/grafana_password
+    env_file:
+      - .env/grafana.env
     ports:
       - "3000:3000"
     depends_on:
       - db
     volumes:
       - grafana_data:/var/lib/grafana
+    networks:
+      - sotm_net
 
   loader:
     image: loader:latest
-    secrets:
-      - postgres_password
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_DB: osmdata
-      POSTGRES_HOST: db
-      POSTGRES_PORT: 5432
-      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    env_file:
+      - .env/db.env
     depends_on:
       - db
     volumes:
       - ./src:/app
-    command: [ "python3", "main.py"]
+    command: ["python3", "main.py"]
+    networks:
+      - sotm_net
 
 volumes:
   postgis_data:
   grafana_data:
 
-secrets:
-  postgres_password:
-    external: true
-  grafana_password:
-    external: true
+networks:
+  sotm_net:
+    driver: overlay
