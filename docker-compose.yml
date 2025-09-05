@@ -34,11 +34,9 @@ services:
     image: loader:latest
     env_file:
       - .env/db.env
-    depends_on:
-      - db
     volumes:
       - ./src:/app
-    command: ["python3", "main.py"]
+    command: ["./wait-for-db.sh", "db", "python3", "main.py"]
     networks:
       - sotm_net
     deploy:
