@@ -1,5 +1,6 @@
 certifi==2025.8.3
 charset-normalizer==3.4.3
+GeoAlchemy2==0.18.0
 geopandas==1.1.1
 greenlet==3.2.4
 idna==3.10
