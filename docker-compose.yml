@@ -42,7 +42,7 @@ services:
       - db
     volumes:
       - ./src:/app
-    command: ["python3", "main.py"]
+    command: ["wait-for-db.sh", "python3", "main.py"]
 
 volumes:
   postgis_data:
