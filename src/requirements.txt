@@ -8,6 +8,7 @@ numpy==2.3.2
 osmnx==2.0.6
 packaging==25.0
 pandas==2.3.2
+psycopg2==2.9.10
 pyogrio==0.11.1
 pyproj==3.7.2
 python-dateutil==2.9.0.post0
