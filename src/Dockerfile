@@ -13,6 +13,10 @@ RUN apt-get update && apt-get install -y \
 # Create workdir
 WORKDIR /app
 
+
+COPY wait-for-db.sh /usr/local/bin/wait-for-db.sh
+RUN chmod +x /usr/local/bin/wait-for-db.sh
+
 # Copy requirements
 COPY requirements.txt /app/
 
@@ -23,4 +27,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app
 
 # Run script
-CMD ["python", "main.py"]
+command: ["wait-for-db.sh", "python3", "main.py"]
