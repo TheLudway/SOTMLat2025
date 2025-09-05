@@ -1,12 +1,14 @@
 version: "3.8"
+
 services:
   db:
-    image: postgis/postgis:16-3.5
-    container_name: postgis
+    image: postgis/postgis:15-3.4
+    secrets:
+      - postgres_password
     environment:
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: secret
       POSTGRES_DB: osmdata
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
     ports:
       - "5432:5432"
     volumes:
@@ -14,17 +16,24 @@ services:
 
   grafana:
     image: grafana/grafana-oss:latest
-    container_name: grafana
+    secrets:
+      - grafana_password
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD_FILE: /run/secrets/grafana_password
     ports:
       - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=secret
-    volumes:
-      - grafana_data:/var/lib/grafana
     depends_on:
       - db
+    volumes:
+      - grafana_data:/var/lib/grafana
 
 volumes:
   postgis_data:
   grafana_data:
+
+secrets:
+  postgres_password:
+    external: true
+  grafana_password:
+    external: true
