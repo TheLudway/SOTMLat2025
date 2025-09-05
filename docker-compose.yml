@@ -51,4 +51,5 @@ volumes:
 
 networks:
   sotm_net:
-    driver: overlay
+    external: true
+    name: sotmlat2025_sotm_net
