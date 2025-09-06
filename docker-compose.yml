@@ -14,6 +14,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    deploy:
+      replicas: 1
 
   grafana:
     image: grafana/grafana-oss:latest
@@ -27,6 +29,8 @@ services:
       - grafana_data:/var/lib/grafana
     networks:
       - sotm_net
+    deploy:
+      replicas: 1
 
   loader:
     image: loader:latest
@@ -37,9 +41,13 @@ services:
     command: ["./wait-for-db.sh", "sotmlat2025_db", "python3", "main.py"]
     networks:
       - sotm_net
+    depends_on:
+      - db
     deploy:
       restart_policy:
         condition: on-failure
+        max_attempts: 5
+      replicas: 1
 
 volumes:
   postgis_data:
@@ -47,5 +55,5 @@ volumes:
 
 networks:
   sotm_net:
-    external: true
-    name: sotmlat2025_sotm_net
+    driver: overlay
+    attachable: true
