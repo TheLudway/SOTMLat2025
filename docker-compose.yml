@@ -34,7 +34,7 @@ services:
       - .env/db.env
     volumes:
       - ./src:/app
-    command: ["./wait-for-db.sh", "db", "python3", "main.py"]
+    command: ["./wait-for-db.sh", "sotmlat2025_db", "python3", "main.py"]
     networks:
       - sotm_net
     deploy:
